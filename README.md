@@ -19,5 +19,6 @@ $ npm start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+This solution based on [Nuxt.js](https://github.com/nuxt/nuxt.js).
 
+You can see the live version [here](https://pizzashop-test-task.herokuapp.com/).
