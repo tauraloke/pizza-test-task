@@ -10,7 +10,7 @@
       </h2>
       <div class="cards">
         <div v-for="product in products" :key="product.title">
-          <product-card :title="product.title" />
+          <product-card :title="product.title" :image="product.image" :preview="product.preview" />
         </div>
       </div>
     </div>
@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
 import ProductCard from '~/components/ProductCard.vue'
 
 export default {
@@ -32,41 +31,25 @@ export default {
   },
   created() {
     this.products = [
-      { title: 'fake', 'price': 1.10},
-      { title: 'fake 2', 'price': 1.20},
-      { title: 'fake 3', 'price': 1.30}
+      { title: 'Banana pizza', image: './images/98a6fe7ef0ba426ba4e85c2b7d59c198.jpg', preview: './images/preview/1.jpg', 'price': 1.10},
+      { title: 'Lobster wheel', image: './images/1200x630.jpg', preview: './images/preview/2.jpg', 'price': 1.20},
+      { title: 'Corndog pizza', image: './images/corndog-pizza.jpg', preview: './images/preview/3.jpg', 'price': 1.30},
+      { title: 'Peas pizza', image: './images/img_1265.jpeg', preview: './images/preview/4.jpg', 'price': 1.30},
+      { title: 'Wide mouth checker', image: './images/McDonalds-Pizza.jpg', preview: './images/preview/5.jpg', 'price': 1.30},
+      { title: 'Everything is a pizza if you brave enough', image: './images/new2-marg.jpg', preview: './images/preview/6.jpg', 'price': 1.30},
+      { title: 'Candy pizza', image: './images/pizza-thumb-1.jpg', preview: './images/preview/7.jpg', 'price': 1.30},
+      { title: 'Pizza with third eye', image: './images/pizza-toppings-eggs1.jpg', preview: './images/preview/8.jpg', 'price': 1.30},
+      { title: 'Corn pizza', image: './images/corndog-pizza.jpg', preview: './images/preview/9.jpg', 'price': 1.30}
     ]
   }
 }
 </script>
 
-<style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+<style scoped>
+  .image {
+    width: calc(20% - 10px);
+    cursor: pointer;
+    margin: 5px;
+    display: inline-block;
+  }
 </style>

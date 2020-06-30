@@ -1,6 +1,11 @@
 <template>
   <div class="product">
     <h4 class="subtitle">{{ title }}</h4>
+    <img :src="preview" @click="toggler = !toggler" class="image" title="Click to see full image" />
+    <FsLightbox
+      :toggler="toggler"
+      :sources="[image]"
+    />
   </div>
 </template>
 
@@ -10,20 +15,23 @@
 
 <script>
   export default {
+    components: {
+      FsLightbox: () => import('fslightbox-vue')
+    },
     name: 'product',
-    props: ['title'],
+    props: ['title', 'image', 'preview'],
     data () {
       return {
-        description: 'A product card.'
+        toggler: false
       }
     },
-    metaInfo () {
-      return {
-        title: this.title,
-        meta: [
-          { vmid: 'description', name: 'description', content: this.description }
-        ]
-      }
+    methods: {
     }
   }
 </script>
+
+<style>
+  .image {
+    cursor: pointer;
+  }
+</style>
