@@ -1,3 +1,6 @@
+import bodyParser from 'body-parser'
+import session from 'express-session'
+
 module.exports = {
   /*
   ** Headers of the page
@@ -13,6 +16,24 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  /*
+  ** Add server middleware
+  ** Nuxt.js uses `connect` module as server
+  ** So most of express middleware works with nuxt.js server middleware
+  */
+  serverMiddleware: [
+    // body-parser middleware
+    bodyParser.json(),
+    // session middleware
+    session({
+      secret: 'super-secret-key',
+      resave: false,
+      saveUninitialized: false,
+      cookie: { maxAge: 60000 }
+    }),
+    // Api middleware
+    '~/api'
+  ],
   /*
   ** Customize the progress bar color
   */
@@ -36,4 +57,3 @@ module.exports = {
     }
   }
 }
-
