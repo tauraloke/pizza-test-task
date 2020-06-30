@@ -1,5 +1,6 @@
 {
   "name": "pizza",
+  "root": "dist",
   "version": "1.0.0",
   "description": "Test task",
   "author": "Tauraloke Esteru <tauraloke@gmail.com>",
