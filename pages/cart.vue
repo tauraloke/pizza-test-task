@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div>
-      <h4 class="subtitle">Cart<h4/>
+      <h4 class="subtitle">Cart</h4>
     </div>
   </section>
 </template>
