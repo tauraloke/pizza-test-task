@@ -1,6 +1,6 @@
 # pizza
 
-> Test task
+> Just a test task.
 
 ## Build Setup
 
@@ -21,4 +21,4 @@ $ npm run generate
 
 This solution based on [Nuxt.js](https://github.com/nuxt/nuxt.js).
 
-You can see the live version [here](https://pizzashop-test-task.herokuapp.com/).
+You can see a live version [here](https://pizzashop-test-task.herokuapp.com/).
