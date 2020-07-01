@@ -31,4 +31,9 @@
   .image {
     cursor: pointer;
   }
+
+  .product {
+    border: 1px solid gray;
+    border-radius: 1em;
+  }
 </style>

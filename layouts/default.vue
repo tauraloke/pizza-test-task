@@ -1,8 +1,17 @@
 <template>
   <div>
+    <navigation/>
     <nuxt/>
   </div>
 </template>
+
+<script>
+export default {
+  components: {
+    Navigation: () => import('~/components/Navigation.vue'),
+  }
+}
+</script>
 
 <style>
 html {
@@ -50,4 +59,3 @@ html {
   background-color: #35495e;
 }
 </style>
-

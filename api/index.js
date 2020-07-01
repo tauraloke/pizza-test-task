@@ -66,6 +66,20 @@ router.post('/login', pgContext((req, res, pgClient) => {
   })
 }))
 
+// Add POST - /api/register
+router.post('/register', pgContext((req, res, pgClient) => {
+  pgQuery(pgClient, 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username;', [req.body.username, req.body.password], (pgRes) => {
+    if (pgRes.rows[0]) {
+      let username = pgRes.rows[0].username
+      let id       = pgRes.rows[0].id
+      req.session.authUser = { username: username, id: id }
+      return res.json({ username: username, id: id })
+    } else {
+      res.status(401).json({ message: 'Bad credentials' })
+    }
+  })
+}))
+
 // Add POST - /api/logout
 router.post('/logout', (req, res) => {
   delete req.session.authUser

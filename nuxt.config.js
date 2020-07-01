@@ -39,9 +39,25 @@ module.exports = {
   */
   loading: { color: '#3B8070' },
   /*
+  ** Add some modules
+  */
+  modules: [
+    'nuxt-buefy'
+  ],
+  /*
   ** Build configuration
   */
   build: {
+    /*
+    ** Tweaks for Bulma
+    */
+    postcss: {
+      preset: {
+        features: {
+          customProperties: false
+        }
+      }
+    },
     /*
     ** Run ESLint on save
     */

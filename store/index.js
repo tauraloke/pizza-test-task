@@ -38,6 +38,18 @@ export const actions = {
     commit('SET_USER', null)
   },
 
+  async register ({ commit }, { username, password }) {
+    try {
+      const { data } = await axios.post('/api/register', { username, password })
+      commit('SET_USER', data)
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        throw new Error('Bad credentials')
+      }
+      throw error
+    }
+  },
+
   async getProducts({ commit }) {
       const {data} = await axios.get('/api/products.json')
       commit('SET_PRODUCTS', data)
