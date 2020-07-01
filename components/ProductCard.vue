@@ -1,11 +1,18 @@
 <template>
   <div class="product">
-    <h4 class="subtitle">{{ title }}</h4>
-    <img :src="preview" @click="toggler = !toggler" class="image" title="Click to see full image" />
+    <div class="image" @click="toggler = !toggler" v-bind:style="{ backgroundImage: `url('${preview}')` }" title="Click to see full view"></div>
     <FsLightbox
       :toggler="toggler"
       :sources="[image]"
     />
+    <hr />
+    <h4 class="subtitle">{{ title }}<span v-if="calcedPrice">, {{ calcedPrice }}</span></h4>
+    <div>
+      <input type="button" value="-" @click="count = Math.max(1, count - 1)" />
+      <input class="count" v-model="count">
+      <input type="button" value="+" @click="count = count + 1" />
+      <input type="submit" value="Add to cart" />
+    </div>
   </div>
 </template>
 
@@ -16,24 +23,22 @@
       FsLightbox: () => import('fslightbox-vue')
     },
     name: 'product',
-    props: ['title', 'image', 'preview'],
+    props: ['title', 'image', 'preview', 'price'],
     data () {
       return {
-        toggler: false
+        toggler: false,
+        count: 1
       }
     },
     methods: {
+    },
+    computed: {
+      calcedPrice: function () {
+        return this.$store.state.currentCurrency + '' + parseFloat(this.price) * this.$store.state.priceCoeff
+      }
     }
   }
 </script>
 
 <style>
-  .image {
-    cursor: pointer;
-  }
-
-  .product {
-    border: 1px solid gray;
-    border-radius: 1em;
-  }
 </style>

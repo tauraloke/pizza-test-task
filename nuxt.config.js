@@ -6,7 +6,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'pizza',
+    title: 'Pizza shop',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -29,7 +29,7 @@ module.exports = {
       secret: 'super-secret-key',
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 60000 }
+      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }
     }),
     // Api middleware
     '~/api'

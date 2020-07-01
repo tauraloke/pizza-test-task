@@ -1,10 +1,10 @@
 <template>
-  <section>
+  <section class="margin-bottom">
 
     <b-navbar type="is-light">
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          Pizzashop
+          Pizza shop
         </b-navbar-item>
       </template>
 
@@ -42,6 +42,7 @@
                     type="password"
                     v-model="formPassword"
                     placeholder="Your password"
+                    password-reveal
                     required>
                   </b-input>
                 </b-field>
@@ -76,6 +77,7 @@
                     type="password"
                     v-model="formPassword"
                     placeholder="Your password"
+                    password-reveal
                     required>
                   </b-input>
                 </b-field>
@@ -84,12 +86,13 @@
                     type="password"
                     v-model="formConfirmPassword"
                     placeholder="Confirm password"
+                    password-reveal
                     required>
                   </b-input>
                 </b-field>
                 <div class="error">{{ formError }}</div>
                 <footer class="modal-card-foot">
-                  <button class="button" type="button" @click="isLoginModalActive = false">Close</button>
+                  <button class="button" type="button" @click="isRegisterModalActive = false">Close</button>
                   <input name="submit" type="submit"  class="button is-primary" value="Sign in" />
                 </footer>
               </section>
@@ -161,6 +164,10 @@ export default {
 </script>
 
 <style scoped>
+
+section.margin-bottom {
+  margin-bottom: 1em;
+}
 
 .userblock span {
   font-weight: bold;
