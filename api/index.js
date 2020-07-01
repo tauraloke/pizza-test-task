@@ -1,4 +1,5 @@
 import express from 'express'
+const { Client } = require('pg');
 
 // Create express router
 const router = express.Router()
@@ -14,30 +15,56 @@ router.use((req, res, next) => {
   next()
 })
 
-router.get('/products.json', (req, res) => {
-  let data = [
-    { title: 'Banana pizza', image: './images/98a6fe7ef0ba426ba4e85c2b7d59c198.jpg', preview: './images/preview/1.jpg', 'price': 1.10},
-    { title: 'Lobster wheel', image: './images/1200x630.jpg', preview: './images/preview/2.jpg', 'price': 1.20},
-    { title: 'Corndog pizza', image: './images/corndog-pizza.jpg', preview: './images/preview/3.jpg', 'price': 1.30},
-    { title: 'Peas pizza', image: './images/img_1265.jpeg', preview: './images/preview/4.jpg', 'price': 1.30},
-    { title: 'Wide mouth checker', image: './images/McDonalds-Pizza.jpg', preview: './images/preview/5.jpg', 'price': 1.30},
-    { title: 'Everything is a pizza if you brave enough', image: './images/new2-marg.jpg', preview: './images/preview/6.jpg', 'price': 1.30},
-    { title: 'Candy pizza', image: './images/pizza-thumb-1.jpg', preview: './images/preview/7.jpg', 'price': 1.30},
-    { title: 'Pizza with third eye', image: './images/pizza-toppings-eggs1.jpg', preview: './images/preview/8.jpg', 'price': 1.30},
-    { title: 'Corn pizza', image: './images/corndog-pizza.jpg', preview: './images/preview/9.jpg', 'price': 1.30}
-  ]
-  res.json(data)
-})
+// Some crutches for Postgres requests.
+function pgContext(block) {
+  return async (req, res) => {
+    const pgClient = new Client({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    })
+    await pgClient.connect()
+    block(req, res, pgClient)
+  }
+}
 
+function pgQuery(pgClient, query, values, callback) {
+  pgClient.query(query, values, async (err, pgRes) => {
+    if (err) {
+      return res.status(403).json({error: 'db query error'})
+    }
+    callback(pgRes)
+    await pgClient.end()
+  })
+}
+
+
+
+////////////
+// ROUTES //
+////////////
+
+// Add GET - /api/products.json
+router.get('/products.json', pgContext((req, res, pgClient) => {
+  pgQuery(pgClient, 'SELECT * FROM products', [], (pgRes) => {
+    res.json(pgRes.rows)
+  })
+}))
 
 // Add POST - /api/login
-router.post('/login', (req, res) => {
-  if (req.body.username === 'demo' && req.body.password === 'demo') {
-    req.session.authUser = { username: 'demo' }
-    return res.json({ username: 'demo' })
-  }
-  res.status(401).json({ message: 'Bad credentials' })
-})
+router.post('/login', pgContext((req, res, pgClient) => {
+  pgQuery(pgClient, 'SELECT * FROM users WHERE username=$1 AND password=$2;', [req.body.username, req.body.password], (pgRes) => {
+    if (pgRes.rows[0]) {
+      let username = pgRes.rows[0].username
+      let id       = pgRes.rows[0].id
+      req.session.authUser = { username: username, id: id }
+      return res.json({ username: username, id: id })
+    } else {
+      res.status(401).json({ message: 'Bad credentials' })
+    }
+  })
+}))
 
 // Add POST - /api/logout
 router.post('/logout', (req, res) => {

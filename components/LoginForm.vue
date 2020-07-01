@@ -6,9 +6,10 @@
       <input name="submit" type="submit" value="Sign in" />
     </form>
     <div v-if="$store.state.authUser" class="userblock">
-      <span>{{ $store.state.authUser.username }}</span>
+      <span>{{ $store.state.authUser.username }}/{{ $store.state.authUser.id }}</span>
       <a @click="logout">Logout</a>
     </div>
+    <div class="error">{{ formError }}</div>
   </div>
 </template>
 
@@ -55,5 +56,9 @@ export default {
   cursor: pointer;
   color: blue;
   text-decoration: underline;
+}
+
+.error {
+  color: red;
 }
 </style>
