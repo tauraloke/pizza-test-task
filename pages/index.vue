@@ -7,11 +7,12 @@
       <div v-if="productLoadingError" class="error">Cannot display products because connection is lost...</div>
       <div class="products columns is-mobile is-multiline">
         <div v-for="product in $store.state.products" :key="product.title" class="column is-one-third-desktop is-full-mobile product-card">
-          <product-card
+          <product
             :title="product.title"
             :image="product.image"
             :preview="product.preview"
             :price="product.price"
+            :id="product.id"
           />
         </div>
         <div v-if="!productLoadingError && $store.state.products.length==0">Loading...</div>
@@ -23,7 +24,7 @@
 <script>
 export default {
   components: {
-    ProductCard: () => import('~/components/ProductCard.vue')
+    Product: () => import('~/components/Product.vue')
   },
   data () {
     return {
@@ -31,20 +32,14 @@ export default {
       productLoadingError: null
     }
   },
-  mounted () {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-
-      setTimeout(() => this.$nuxt.$loading.finish(), 500)
-    })
-  },
   async created() {
+    if (this.$store.state.products.length > 0) {
+      return
+    }
     try {
         await this.$store.dispatch('getProducts')
         this.productLoadingError = null
-      } catch (e) {
-        this.formError = e.message
-      }
+      } catch (e) {}
   }
 }
 </script>

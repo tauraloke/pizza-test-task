@@ -1,7 +1,19 @@
 <template>
-  <div>
-    <navigation/>
-    <nuxt/>
+  <div class="site-parent">
+    <navigation ref="navigation" />
+    <div class="site-content">
+      <nuxt/>
+    </div>
+    <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        This site is not a real pizza shop, but just a test work.
+      </p>
+      <p>
+        Used technologies: Nuxt.JS, Bulma, Postgres and Heroku.
+      </p>
+    </div>
+  </footer>
   </div>
 </template>
 
@@ -9,6 +21,10 @@
 export default {
   components: {
     Navigation: () => import('~/components/Navigation.vue'),
+  },
+  data () {
+    return {
+    }
   }
 }
 </script>
@@ -57,5 +73,17 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+
+.site-parent {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.site-content {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  flex: 1;
 }
 </style>

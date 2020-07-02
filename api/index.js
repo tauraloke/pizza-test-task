@@ -29,9 +29,10 @@ function pgContext(block) {
   }
 }
 
-function pgQuery(pgClient, query, values, callback) {
+function pgQuery(pgClient, query, values, res, callback) {
   pgClient.query(query, values, async (err, pgRes) => {
     if (err) {
+      console.log(err)
       return res.status(403).json({error: 'db query error'})
     }
     callback(pgRes)
@@ -47,14 +48,14 @@ function pgQuery(pgClient, query, values, callback) {
 
 // Add GET - /api/products.json
 router.get('/products.json', pgContext((req, res, pgClient) => {
-  pgQuery(pgClient, 'SELECT * FROM products', [], (pgRes) => {
+  pgQuery(pgClient, 'SELECT * FROM products', [], res, (pgRes) => {
     res.json(pgRes.rows)
   })
 }))
 
 // Add POST - /api/login
 router.post('/login', pgContext((req, res, pgClient) => {
-  pgQuery(pgClient, 'SELECT * FROM users WHERE username=$1 AND password=$2;', [req.body.username, req.body.password], (pgRes) => {
+  pgQuery(pgClient, 'SELECT * FROM users WHERE username=$1 AND password=$2;', [req.body.username, req.body.password], res, (pgRes) => {
     if (pgRes.rows[0]) {
       let username = pgRes.rows[0].username
       let id       = pgRes.rows[0].id
@@ -68,7 +69,7 @@ router.post('/login', pgContext((req, res, pgClient) => {
 
 // Add POST - /api/register
 router.post('/register', pgContext((req, res, pgClient) => {
-  pgQuery(pgClient, 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username;', [req.body.username, req.body.password], (pgRes) => {
+  pgQuery(pgClient, 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username;', [req.body.username, req.body.password], res, (pgRes) => {
     if (pgRes.rows[0]) {
       let username = pgRes.rows[0].username
       let id       = pgRes.rows[0].id
@@ -85,6 +86,21 @@ router.post('/logout', (req, res) => {
   delete req.session.authUser
   res.json({ ok: true })
 })
+
+// Add POST - /api/send_order
+router.post('/send_order', pgContext((req, res, pgClient) => {
+  let userId = req.session.authUser && req.session.authUser.id ? req.session.authUser.id : 0
+  pgQuery(
+    pgClient,
+    'INSERT INTO orders (name, surname, phone, address, cart, user_id, currency, delivery_cost, total_cost) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);',
+    [req.body.name, req.body.surname, req.body.phone, req.body.address, JSON.stringify(req.body.cart), userId, req.body.currency, req.body.deliveryCost, req.body.totalCost],
+    res,
+    (pgRes) => {
+      return res.json({ status: 'ok' })
+    })
+  }
+))
+
 
 // Export the server middleware
 export default {
