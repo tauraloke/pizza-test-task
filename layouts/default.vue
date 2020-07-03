@@ -25,6 +25,9 @@ export default {
   data () {
     return {
     }
+  },
+  beforeCreate() {
+    this.$store.commit('INIT_STORE')
   }
 }
 </script>

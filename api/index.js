@@ -53,6 +53,16 @@ router.get('/products.json', pgContext((req, res, pgClient) => {
   })
 }))
 
+// Add GET - /api/orders.json
+router.get('/orders.json', pgContext((req, res, pgClient) => {
+  if (!req.session.authUser || !req.session.authUser.id) {
+    return res.status(403).json({ error: 'You should sign in to get personal order history.' })
+  }
+  pgQuery(pgClient, 'SELECT * FROM orders WHERE user_id=$1', [req.session.authUser.id], res, (pgRes) => {
+    res.json(pgRes.rows)
+  })
+}))
+
 // Add POST - /api/login
 router.post('/login', pgContext((req, res, pgClient) => {
   pgQuery(pgClient, 'SELECT * FROM users WHERE username=$1 AND password=$2;', [req.body.username, req.body.password], res, (pgRes) => {

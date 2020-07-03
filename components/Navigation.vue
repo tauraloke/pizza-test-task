@@ -12,10 +12,11 @@
         <b-navbar-item tag="router-link" :to="{ path: '/cart' }">
           🛒 My cart
         </b-navbar-item>
-      </template>
 
+        <b-navbar-item v-if="$store.state.authUser" tag="router-link" :to="{ path: '/order/history' }">
+          📚 My orders
+        </b-navbar-item>
 
-      <template slot="start">
         <b-navbar-item @click="changeCurrency(nextCurrency)">
           💱 Change display currency to {{nextCurrency }}
         </b-navbar-item>

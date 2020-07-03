@@ -10,6 +10,21 @@ export const state = () => ({
 })
 
 export const mutations = {
+  INIT_STORE (state) {
+    if (!process.browser) {
+      return
+    }
+    if (localStorage.getItem('cart')) {
+      state.cart = JSON.parse(localStorage.getItem('cart'))
+    }
+    if (localStorage.getItem('currentCurrency')) {
+      state.currentCurrency = JSON.parse(localStorage.getItem('currentCurrency'))
+    }
+    if (localStorage.getItem('priceCoeff')) {
+      state.priceCoeff = JSON.parse(localStorage.getItem('priceCoeff'))
+    }
+  },
+
   SET_USER (state, user) {
     state.authUser = user
   },
@@ -24,22 +39,27 @@ export const mutations = {
     } else {
       state.cart[id].amount += parseInt(product.amount)
     }
+    localStorage.setItem('cart', JSON.stringify(state.cart))
   },
 
   REMOVE_FROM_CART (state, { id }) {
     delete state.cart[id]
+    localStorage.setItem('cart', JSON.stringify(state.cart))
   },
 
   DROP_CART (state) {
     state.cart = []
+    localStorage.setItem('cart', JSON.stringify(state.cart))
   },
 
   SET_CURRENCY (state, currency) {
     state.currentCurrency = currency
+    localStorage.setItem('currentCurrency', JSON.stringify(state.currentCurrency))
   },
 
   SET_PRICE_COEFF (state, coeff) {
     state.priceCoeff = coeff
+    localStorage.setItem('priceCoeff', JSON.stringify(state.priceCoeff))
   }
 }
 

@@ -120,6 +120,7 @@
           })
           this.$store.dispatch('dropCart')
           this.needToUpdatePrices += 1
+          this.$router.push('order/success')
         } catch (error) {
           this.formError = 'Something wrong.'
         }
