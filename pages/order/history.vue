@@ -6,7 +6,8 @@
       <div v-if="userOrders===null">Loading...</div>
       <div v-if="userOrders===-1" class="error">Sorry, cannot load order info. Try to update the page.</div>
       <div v-if="userOrders && Array.isArray(userOrders.data)">
-        <ul>
+        <div v-if="userOrders.data.length === 0">There is no order history yet.</div>
+        <ul v-if="userOrders.data.length > 0">
           <li v-for="order in userOrders.data" :key="order.id">
             Order with cost {{order.currency}}{{order.total_cost}} at {{ order.created_at }}
             <ul>
@@ -32,7 +33,6 @@
     created: async function() {
       try {
         this.userOrders = await axios.get('/api/orders.json')
-        console.log(this.userOrders.data[0].id)
       } catch (error) {
         this.userOrders = -1
       }
