@@ -2,8 +2,8 @@
   <section class="container">
     <div>
       <h3 class="title">Cart</h3>
-      <div v-if="cartLength < 1">There is no pizza yet. You can <router-link to="/">add something</router-link>!</div>
-      <div v-if="cartLength > 0">
+      <div v-if="cartLength < 1" key="no-data-text">There is no pizza yet. You can <router-link to="/">add something</router-link>!</div>
+      <div v-else key="cart-list">
         <b-table
           :data="cartData"
           :striped="true">
@@ -21,16 +21,16 @@
               {{ props.row.cost }}
             </b-table-column>
             <b-table-column field="removable" label="Remove" class="removable">
-              <input v-if="props.row.removable" type="button" @click="remove(props.row.removable)" value="Remove" />
+              <input v-if="props.row.removable" type="button" @click="remove(props.row.removable)" value="Remove" key="input-removable" />
             </b-table-column>
           </template>
         </b-table>
       </div>
     </div>
 
-    <div class="delivery-block" v-if="cartLength > 0">
+    <div class="delivery" v-if="cartLength > 0" key="delivery-form">
       <h3 class="title">Delivery form</h3>
-      <form class="delivery-form" @submit="dispatchDelivery">
+      <form class="delivery__form" @submit="dispatchDelivery">
 
         <b-field label="Name">
           <b-input
@@ -69,12 +69,12 @@
         </b-field>
 
         <b-checkbox v-model="acceptPrivacy"> I agree to send this data</b-checkbox>
-        <div v-if="formError" class="error">{{ formError }}</div>
+        <div v-if="formError" class="error" key="error">{{ formError }}</div>
         <hr/>
         <div>Delivery cost: {{ $store.state.currentCurrency }}{{ deliveryCost }}</div>
         <div>Total: {{ $store.state.currentCurrency }}{{ finalCost }}</div>
         <hr/>
-        <div class="center-the-submit-button">
+        <div class="delivery__button-submit">
           <input name="submit" type="submit" v-bind:class="['button', acceptPrivacy ? 'is-primary' : '']" value="Send me my pizza!" v-bind:disabled="!acceptPrivacy" />
         </div>
       </form>
@@ -167,25 +167,21 @@
 </script>
 
 <style scoped>
-.removable {
-  text-align: right;
-}
+  .removable {
+    text-align: right;
+  }
 
-.delivery-block {
-  margin-top: 3em;
-}
+  .delivery {
+    margin-top: 3em;
+  }
 
-.delivery-form {
-  background: #EEF;
-  border-radius: 1em;
-  padding: 1em;
-}
+  .delivery .delivery__form {
+    background: #EEF;
+    border-radius: 1em;
+    padding: 1em;
+  }
 
-.center-the-submit-button {
-  text-align: center;
-}
-
-.error {
-  color: red;
-}
+  .delivery .delivery__button-submit {
+    text-align: center;
+  }
 </style>

@@ -4,10 +4,10 @@
       <h1 class="title">
         Pizza list
       </h1>
-      <div v-if="productLoadingError" class="error">Cannot display products because connection is lost...</div>
+      <div v-if="productLoadingError" class="error" key="no-connection">Cannot display products because connection is lost...</div>
       <div class="products columns is-mobile is-multiline">
         <div v-for="product in $store.state.products" :key="product.title" class="column is-one-third-desktop is-full-mobile product-card">
-          <product
+          <product-item
             :title="product.title"
             :image="product.image"
             :preview="product.preview"
@@ -15,7 +15,7 @@
             :id="product.id"
           />
         </div>
-        <div v-if="!productLoadingError && $store.state.products.length==0">Loading...</div>
+        <div v-if="!productLoadingError && $store.state.products.length==0" key="loading">Loading...</div>
       </div>
     </div>
   </section>
@@ -24,7 +24,7 @@
 <script>
 export default {
   components: {
-    Product: () => import('~/components/Product.vue')
+    ProductItem: () => import('~/components/ProductItem.vue')
   },
   data () {
     return {
@@ -44,29 +44,5 @@ export default {
 }
 </script>
 
-<style>
-  .product {
-    min-height: 300px;
-    text-align: center;
-    border-radius: 1em;
-    background: #EEE;
-    padding-top: 30px;
-    padding-bottom: 30px;
-  }
-
-  .product input.count {
-    width: 3em;
-    text-align: center;
-  }
-
-  .image {
-    width: 200px;
-    height: 150px;
-    background: gray;
-    cursor: pointer;
-    margin: 5px;
-    display: inline-block;
-    border-radius: 50%;
-    border: 3px solid #800;
-  }
+<style scoped>
 </style>

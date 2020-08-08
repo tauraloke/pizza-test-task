@@ -13,7 +13,7 @@
           🛒 My cart
         </b-navbar-item>
 
-        <b-navbar-item v-if="$store.state.authUser" tag="router-link" :to="{ path: '/order/history' }">
+        <b-navbar-item v-if="$store.state.authUser" tag="router-link" :to="{ path: '/order/history' }" key="authed-user-menu-points">
           📚 My orders
         </b-navbar-item>
 
@@ -23,10 +23,10 @@
       </template>
 
       <template slot="end">
-        <b-navbar-item @click="isLoginModalActive = true" v-if="!$store.state.authUser">Sign in</b-navbar-item>
-        <b-navbar-item @click="isRegisterModalActive = true" v-if="!$store.state.authUser">Sign up</b-navbar-item>
-        <b-navbar-item v-if="$store.state.authUser">{{ $store.state.authUser.username }}</b-navbar-item>
-        <b-navbar-item @click="logout" v-if="$store.state.authUser">Logout</b-navbar-item>
+        <b-navbar-item @click="isLoginModalActive = true" v-if="!$store.state.authUser" key="signin-button">Sign in</b-navbar-item>
+        <b-navbar-item @click="isRegisterModalActive = true" v-if="!$store.state.authUser" key="signup-button">Sign up</b-navbar-item>
+        <b-navbar-item v-if="$store.state.authUser" key="username">{{ $store.state.authUser.username }}</b-navbar-item>
+        <b-navbar-item @click="logout" v-if="$store.state.authUser" key="logout-button">Logout</b-navbar-item>
       </template>
     </b-navbar>
 
@@ -117,6 +117,7 @@
 export default {
   components: {
   },
+  name: 'TheNavigation',
   data () {
     return {
       formError: null,
@@ -182,16 +183,6 @@ export default {
 </script>
 
 <style scoped>
-.userblock span {
-  font-weight: bold;
-}
-
-.userblock a {
-  cursor: pointer;
-  color: blue;
-  text-decoration: underline;
-}
-
 .error {
   color: red;
 }
